@@ -1,114 +1,81 @@
-import java.util.*;
+package P1;
 
-class ValidaCPF {
-    public static boolean isCPF(String cpf) {
-        if (cpf == null) return false;
+import java.util.InputMismatchException;
+import java.util.regex.Pattern;
 
-        // Remove todos os caracteres não numéricos
-        String num = cpf.replaceAll("[^0-9]", "");
+public class ValidaCPF {
+    public static boolean isCPF(String _CPF) {
 
-        // Verifica se tem 11 dígitos
-        if (num.length() != 11) return false;
+        if(_CPF == null){
+            return false;
+        }
 
-        // Verifica se todos os dígitos são iguais
-        if (num.matches("(\\d)\\1{10}")) return false;
+        String regexCPFString = "^(\\\\d{11}|\\\\d{3}\\\\.\\\\d{3}\\\\.\\\\d{3}-\\\\d{2}|\\\\d{3}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{2})$";
 
-        // Calcula os dígitos verificadores
+        if (!(Pattern.matches(regexCPFString, _CPF))) {
+            System.out.println("Formato do CPF errado. \nTente: 000.000.000-00 ou 0000000000 ou 000.000.000/00");
+            return false;
+        }
+
+        String CPF = _CPF.replaceAll("[\\.\\-/]", "");
+
+        if (CPF.equals("00000000000") ||
+                CPF.equals("11111111111") ||
+                CPF.equals("22222222222") || CPF.equals("33333333333") ||
+                CPF.equals("44444444444") || CPF.equals("55555555555") ||
+                CPF.equals("66666666666") || CPF.equals("77777777777") ||
+                CPF.equals("88888888888") || CPF.equals("99999999999") ||
+                (CPF.length() != 11))
+            return (false);
+
+        char dig10, dig11;
+        int sm, i, r, num, peso;
         try {
-            int d1 = 0, d2 = 0;
-            for (int i = 1; i <= 9; i++) {
-                int dig = Integer.parseInt(num.substring(i - 1, i));
-                d1 += dig * (11 - i);
-                d2 += dig * (12 - i);
+            sm = 0;
+            peso = 10;
+            for (i = 0; i < 9; i++) {
+                num = (int) (CPF.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
             }
-            int resto1 = d1 % 11;
-            resto1 = resto1 < 2 ? 0 : 11 - resto1;
-            d2 += resto1 * 2;
-            int resto2 = d2 % 11;
-            resto2 = resto2 < 2 ? 0 : 11 - resto2;
 
-            return resto1 == Integer.parseInt(num.substring(9, 10)) &&
-                   resto2 == Integer.parseInt(num.substring(10));
-        } catch (Exception e) {
-            return false;
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11))
+                dig10 = '0';
+            else
+                dig10 = (char) (r + 48);
+
+            sm = 0;
+            peso = 11;
+            for (i = 0; i < 10; i++) {
+                num = (int) (CPF.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11))
+                dig11 = '0';
+            else
+                dig11 = (char) (r + 48);
+
+            if ((dig10 == CPF.charAt(9)) && (dig11 == CPF.charAt(10)))
+                return (true);
+            else
+                return (false);
+        } catch (InputMismatchException erro) {
+            return (false);
         }
     }
 
-    public static long toLong(String cpf) {
-        String num = cpf.replaceAll("[^0-9]", "");
-        return Long.parseLong(num);
+    public static String imprimeCPF(String CPF) {
+        return (CPF.substring(0, 3) + "." + CPF.substring(3, 6) + "." +
+                CPF.substring(6, 9) + "-" + CPF.substring(9, 11));
+    }
+
+    public long toLong(String _CPF) {
+        String CPF = _CPF.replaceAll("[\\.-/]", "");
+        Long CPFinal = Long.parseLong(CPF);
+        return CPFinal;
     }
 }
-
-class ValidaData {
-    public static boolean isDia(String diaStr) {
-        try {
-            int dia = Integer.parseInt(diaStr);
-            return dia >= 1 && dia <= 31;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isMes(String mesStr) {
-        try {
-            int mes = converteMes(mesStr);
-            return mes >= 1 && mes <= 12;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isAno(String anoStr) {
-        try {
-            int ano = Integer.parseInt(anoStr);
-            int atual = Calendar.getInstance().get(Calendar.YEAR);
-            return ano >= (atual - 120) && ano <= atual;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static int converteMes(String mesStr) {
-        mesStr = mesStr.trim().toLowerCase();
-        switch (mesStr) {
-            case "1": case "01": case "janeiro": return 1;
-            case "2": case "02": case "fevereiro": return 2;
-            case "3": case "03": case "marco": return 3;
-            case "4": case "04": case "abril": return 4;
-            case "5": case "05": case "maio": return 5;
-            case "6": case "06": case "junho": return 6;
-            case "7": case "07": case "julho": return 7;
-            case "8": case "08": case "agosto": return 8;
-            case "9": case "09": case "setembro": return 9;
-            case "10": case "outubro": return 10;
-            case "11": case "novembro": return 11;
-            case "12": case "dezembro": return 12;
-            default: throw new IllegalArgumentException("Mês inválido: " + mesStr);
-        }
-    }
-
-    public static boolean isDataValida(int dia, int mes, int ano) {
-        try {
-            GregorianCalendar gc = new GregorianCalendar();
-            gc.setLenient(false);
-            gc.set(ano, mes - 1, dia);
-            gc.getTime();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isDataValida(String diaStr, String mesStr, String anoStr) {
-        try {
-            int dia = Integer.parseInt(diaStr);
-            int mes = converteMes(mesStr);
-            int ano = Integer.parseInt(anoStr);
-            return isDataValida(dia, mes, ano);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-}
-

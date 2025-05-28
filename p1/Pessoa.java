@@ -1,102 +1,99 @@
+package P1;
 
-
-import java.util.GregorianCalendar;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.format.*;
 
 public class Pessoa {
     private String nome;
     private String sobreNome;
-    private GregorianCalendar dataNasc;
+    private LocalDate dataNasc;
     private long numCPF;
     private float peso;
     private float altura;
-
-    private static int contador = 0;
+    public static int c = 0;
 
     public Pessoa(String nome, String sobreNome, int dia, int mes, int ano) {
-        this.nome = nome;
-        this.sobreNome = sobreNome;
-        this.dataNasc = new GregorianCalendar(ano, mes - 1, dia);
-        contador++;
+        setNome(nome);
+        setSobreNome(sobreNome);
+        // Isdata valida?
+        setDataNasc(dia, mes, ano);
+        c++;
     }
 
-    public Pessoa(String nome, String sobreNome, int dia, int mes, int ano, long numCPF, float peso, float altura) {
-        this(nome, sobreNome, dia, mes, ano);
-        this.numCPF = numCPF;
-        this.peso = peso;
-        this.altura = altura;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSobreNome() {
-        return sobreNome;
-    }
-
-    public void setSobreNome(String sobreNome) {
-        this.sobreNome = sobreNome;
-    }
-
-    public GregorianCalendar getDataNasc() {
-        return dataNasc;
-    }
-
-    public void setDataNasc(GregorianCalendar dataNasc) {
-        this.dataNasc = dataNasc;
-    }
-
-    public long getNumCPF() {
-        return numCPF;
-    }
-
-    public void setNumCPF(long numCPF) {
-        this.numCPF = numCPF;
-    }
-
-    public float getPeso() {
-        return peso;
-    }
-
-    public void setPeso(float peso) {
-        this.peso = peso;
+    public Pessoa(String nome, String sobreNome, int dia, int mes, int ano, String CPF, float peso, float altura) {
+        setNome(nome);
+        setSobreNome(sobreNome);
+        // Isdata valida?
+        setDataNasc(dia, mes, ano);
+        // validaCPF
+        ValidaCPF v = new ValidaCPF();
+        setNumCPF(v.toLong(CPF));
+        setAltura(altura);
+        setPeso(peso);
+        c++;
     }
 
     public float getAltura() {
         return altura;
     }
 
+    public LocalDate getDataNasc() {
+        return dataNasc;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public long getNumCPF() {
+        return numCPF;
+    }
+
+    public float getPeso() {
+        return peso;
+    }
+
+    public String getSobreNome() {
+        return sobreNome;
+    }
+
     public void setAltura(float altura) {
         this.altura = altura;
     }
 
-    public int getIdade() {
-        Calendar hoje = Calendar.getInstance();
-        int idade = hoje.get(Calendar.YEAR) - dataNasc.get(Calendar.YEAR);
-        if (hoje.get(Calendar.MONTH) < dataNasc.get(Calendar.MONTH) ||
-           (hoje.get(Calendar.MONTH) == dataNasc.get(Calendar.MONTH) &&
-            hoje.get(Calendar.DAY_OF_MONTH) < dataNasc.get(Calendar.DAY_OF_MONTH))) {
-            idade--;
-        }
-        return idade;
+    public void setDataNasc(int dia, int mes, int ano) {
+        LocalDate data = LocalDate.of(ano, mes, dia);
+        this.dataNasc = data;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setNumCPF(long numCPF) {
+        this.numCPF = numCPF;
+    }
+
+    public void setPeso(float peso) {
+        this.peso = peso;
+    }
+
+    public void setSobreNome(String sobreNome) {
+        this.sobreNome = sobreNome;
     }
 
     public String toString() {
-        int dia = dataNasc.get(Calendar.DAY_OF_MONTH);
-        int mes = dataNasc.get(Calendar.MONTH) + 1;
-        int ano = dataNasc.get(Calendar.YEAR);
 
-        return String.format(
-                "Nome: %s %s\nData de Nascimento: %02d/%02d/%d\nCPF: %011d\nPeso: %.2f kg\nAltura: %.2f m",
-                nome, sobreNome, dia, mes, ano, numCPF, peso, altura);
-    }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = (dataNasc != null)
+                ? dataNasc.format(formatter)
+                : "Data não informada";
 
-    public static int numPessoas(){
-        return contador; 
+        return "Nome completo: " + nome + " " + sobreNome +
+                "\nCPF: " + String.format("%011d", numCPF) +
+                "\nData de nascimento: " + dataFormatada +
+                "\nAltura: " + altura + " m" +
+                "\nPeso: " + peso + " kg";
+
     }
 }
