@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 import java.util.regex.Pattern;
 
 public class ValidaCPF {
-    public static boolean isCPF(String _CPF) {
+    public boolean isCPF(String _CPF) {
 
         if(_CPF == null){
             return false;
@@ -13,7 +13,6 @@ public class ValidaCPF {
         String regexCPFString = "^(\\\\d{11}|\\\\d{3}\\\\.\\\\d{3}\\\\.\\\\d{3}-\\\\d{2}|\\\\d{3}\\\\.\\\\d{3}\\\\.\\\\d{3}/\\\\d{2})$";
 
         if (!(Pattern.matches(regexCPFString, _CPF))) {
-            System.out.println("Formato do CPF errado. \nTente: 000.000.000-00 ou 0000000000 ou 000.000.000/00");
             return false;
         }
 

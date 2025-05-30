@@ -5,11 +5,11 @@ import java.time.Period;
 
 public class Homem extends Pessoa {
 
-    public Homem(String nome, String sobreNome, int dia, int mes, int ano, String CPF, float peso, float altura) {
+    public Homem(String nome, String sobreNome, String dia, String mes, String ano, String CPF, String peso, String altura) {
         super(nome, sobreNome, dia, mes, ano, CPF, peso, altura);
     }
 
-    public Homem(String nome, String sobreNome, int dia, int mes, int ano) {
+    public Homem(String nome, String sobreNome, String dia, String mes, String ano) {
         super(nome, sobreNome, dia, mes, ano);
     }
 

@@ -11,7 +11,7 @@ public class ValidaData {
         }
     }
 
-    public static boolean isAno(int ano) {
+    public boolean isAno(int ano) {
         LocalDate hoje = LocalDate.now();
         if (ano > -120 && ano <= hoje.getYear()) {
             return true;
@@ -110,5 +110,20 @@ public class ValidaData {
         return false;
 
     }
+
+    public int mesParaNumero(String nomeMes) throws IllegalArgumentException {
+        if (nomeMes == null) {
+            throw new IllegalArgumentException("O mês não pode ser nulo.");
+        }
+
+        nomeMes = nomeMes.trim().toUpperCase();
+
+        try {
+            return Mes.valueOf(nomeMes).getNumero();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Nome de mês inválido: " + nomeMes);
+        }
+    }
+
 
 }
