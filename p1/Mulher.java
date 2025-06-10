@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public class Mulher extends Pessoa {
-    public Mulher(String nome, String sobreNome, String dia, String mes, String ano, String CPF, String peso, String altura) {
+    public Mulher(String nome, String sobreNome, String dia, String mes, String ano, String CPF, String peso,
+            String altura) {
         super(nome, sobreNome, dia, mes, ano, CPF, peso, altura);
     }
 
@@ -24,8 +25,6 @@ public class Mulher extends Pessoa {
 
     @Override
     public String toString() {
-        return String.format("%s, gênero: Mulher, idade: %d anos",
-                super.toString(),
-                getIdade());
+        return super.toString() + "\nSexo: Feminino";
     }
 }

@@ -70,7 +70,6 @@ public class P1nX {
         }
 
         pessoas = new Pessoa[total];
-
         int count = 0;
 
         while (count < total) {

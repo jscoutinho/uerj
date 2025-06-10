@@ -5,7 +5,8 @@ import java.time.Period;
 
 public class Homem extends Pessoa {
 
-    public Homem(String nome, String sobreNome, String dia, String mes, String ano, String CPF, String peso, String altura) {
+    public Homem(String nome, String sobreNome, String dia, String mes, String ano, String CPF, String peso,
+            String altura) {
         super(nome, sobreNome, dia, mes, ano, CPF, peso, altura);
     }
 
@@ -25,8 +26,6 @@ public class Homem extends Pessoa {
 
     @Override
     public String toString() {
-        return String.format("%s, gênero: Homem, idade: %d anos",
-                super.toString(),
-                getIdade());
+        return super.toString() + "\nSexo: Masculino";
     }
 }
