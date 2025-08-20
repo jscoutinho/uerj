@@ -1,0 +1,7 @@
+package prep.a2;
+
+public class PrecoInvalidoException extends RuntimeException {
+    public PrecoInvalidoException (String msg ){
+        super(msg);
+    }
+}

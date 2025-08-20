@@ -1,0 +1,13 @@
+import java.util.ArrayList;
+
+public class E{
+    public static void main(String[] args){
+        ArrayList<Animal> Zoo = new ArrayList<>();
+
+        Zoo.add(Animal)
+
+        for(Animal e : Zoo){
+            System.out.println(e)
+        }
+    }
+}
